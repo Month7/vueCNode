@@ -7,12 +7,12 @@
 
 <script>
   import cnHeader from './components/Header'
-export default {
-  name: 'App',
-  components:{
-    cnHeader
+  export default {
+    name: 'App',
+    components:{
+      cnHeader
+    }
   }
-}
 </script>
 
 <style>
