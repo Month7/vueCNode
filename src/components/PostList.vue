@@ -32,6 +32,11 @@ export default {
           loading:false
       }
   },
+  filters:{
+      formatDate(createTime){
+          return String(createTime).match(/.{10}/)[0];
+      }
+  },
   methods:{
       getData(){
           var self = this;

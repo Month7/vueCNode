@@ -2,6 +2,7 @@
   <div id="app">
     <cnHeader></cnHeader>
     <router-view name="main"></router-view>
+    <router-view name="sidebar"></router-view>
   </div>
 </template>
 
@@ -19,14 +20,14 @@
 	html {
     background-color: #DDDDDD;
 	}
-#app {
+  #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 20px;
-}
-body,div,span,a,p,ul,li {
-	margin: 0;
-	padding: 0;
-}
+  }
+  body,div,span,a,p,ul,li {
+    margin: 0;
+    padding: 0;
+  }
 </style>
