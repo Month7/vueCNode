@@ -1,9 +1,9 @@
 <template>
   <div class="footer">
-      <router-link :to="{name:'index'}" @click.native="change('index')" :class="{active:clicked == 'index'}"><i class="glyphicon glyphicon-home"></i>首页</router-link>
+      <router-link :to="{name:'index',params:{tab:'all'}}" @click.native="change('index')" :class="{active:clicked == 'index'}"><i class="glyphicon glyphicon-home"></i>首页</router-link>
       <router-link :to="{name:'publish'}" @click.native="change('publish')" :class="{active:clicked == 'publish'}"><i class="glyphicon glyphicon-pencil"></i>发布</router-link>
       <router-link :to="{name:'message'}" @click.native="change('message')" :class="{active:clicked == 'message'}"><i class="glyphicon glyphicon-envelope"></i>消息</router-link>
-      <router-link :to="{name:'mine'}"  @click.native="change('mine')" :class="{active:clicked == 'mine'}"><i class="glyphicon glyphicon-user"></i>我的</router-link>
+      <router-link :to="{name:'login'}"  @click.native="change('login')" :class="{active:clicked == 'login'}"><i class="glyphicon glyphicon-user"></i>我的</router-link>
   </div>
 </template>
 <script>
@@ -17,7 +17,6 @@ export default {
   methods:{
       change(data){
           this.clicked = data;
-          console.log(this.clicked);
       }
   },
 }

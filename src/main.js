@@ -16,7 +16,17 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
-
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') {
+    next()
+  } else {
+    if (!sessionStorage.getItem('isLogin') === true) {
+      next({path: '/login'})
+    } else {
+      next()
+    }
+  }
+})
 Vue.filter('filterTime', function (str) {
   if (!str) return ''
   var date = new Date(str)

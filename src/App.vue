@@ -20,7 +20,10 @@
 <style>
 	html {
     background-color: #DDDDDD;
-	}
+  }
+  html,body,#app {
+    height: 100%;
+  }
   .nav{
     height: 40px;
     position: fixed;
@@ -35,12 +38,6 @@
     padding-bottom: 4rem;
     height: 100%;
   }
-  /* #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 20px;
-  } */
   body,div,span,a,p,ul,li {
     margin: 0;
     /* padding: 0; */

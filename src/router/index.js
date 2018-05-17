@@ -1,12 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import cHeader from '../components/Header.vue'
-import allList from '../components/Index/AllList.vue'
-import goodList from '../components/Index/Good.vue'
-import shareList from '../components/Index/Share.vue'
-import askList from '../components/Index/Ask.vue'
-import jobList from '../components/Index/Job.vue'
-import testList from '../components/Index/Test.vue'
+import content from '../components/Content.vue'
+import home from '../components/Home.vue'
+import login from '../components/Login.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -18,7 +15,16 @@ export default new Router({
       name: 'index',
       components: {
         nav: cHeader,
-        lists: allList
+        lists: home
+      }
+    },
+    // 登录
+    {
+      path: '/login',
+      name: 'login',
+      components: {
+        nav: cHeader,
+        lists: login
       }
     },
     // 消息
@@ -31,57 +37,58 @@ export default new Router({
     },
     // 精华列表
     {
-      path: '/?tab=good',
+      path: '/?tab=:tab',
       name: 'good',
       components: {
         nav: cHeader,
-        lists: goodList
+        lists: content
       }
     },
     // 分享列表
     {
-      path: '/?tab=share',
+      path: '/?tab=:tab',
       name: 'share',
       components: {
         nav: cHeader,
-        lists: shareList
+        lists: content
       }
     },
     // 问答列表
     {
-      path: '/?tab=ask',
+      path: '/?tab=:tab',
       name: 'ask',
       components: {
         nav: cHeader,
-        lists: askList
+        lists: content
       }
     },
     // 测试列表
     {
-      path: '/?tab=test',
+      path: '/?tab=:tab',
       name: 'test',
       components: {
         nav: cHeader,
-        lists: testList
+        lists: content
       }
     },
     // 招聘列表
     {
-      path: '/?tab=job',
+      path: '/?tab=:tab',
       name: 'job',
       components: {
         nav: cHeader,
-        lists: jobList
+        lists: content
       }
     },
     // 全部列表
     {
-      path: '/all',
+      path: '/?tab=:tab',
       name: 'all',
       components: {
         nav: cHeader,
-        lists: allList
+        lists: content
       }
     }
   ]
 })
+
