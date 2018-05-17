@@ -1,17 +1,18 @@
 <template>
   <div id="app">
-    <cnHeader></cnHeader>
-    <router-view name="main"></router-view>
-    <router-view name="sidebar"></router-view>
+    <router-view name="nav" class="nav"></router-view>
+    <router-view name="lists" class="lists"></router-view>
+    <cFooter></cFooter>
   </div>
 </template>
 
 <script>
-  import cnHeader from './components/Header'
+  import cHeader from './components/Header.vue';
+  import cFooter from './components/Footer.vue';
   export default {
     name: 'App',
     components:{
-      cnHeader
+      cFooter
     }
   }
 </script>
@@ -20,14 +21,28 @@
 	html {
     background-color: #DDDDDD;
 	}
-  #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 20px;
+  .nav{
+    height: 40px;
+    position: fixed;
+    top:0;
+    width: 100%;
   }
+  .lists{
+    overflow-x:auto;  
+    overflow-y:scroll;  
+    padding-top:5rem;
+    background: #fff;
+    padding-bottom: 4rem;
+    height: 100%;
+  }
+  /* #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 20px;
+  } */
   body,div,span,a,p,ul,li {
     margin: 0;
-    padding: 0;
+    /* padding: 0; */
   }
 </style>

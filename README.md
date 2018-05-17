@@ -1,4 +1,4 @@
-# wtf
+# vueCnode
 
 > vue.js实现CNode
 
