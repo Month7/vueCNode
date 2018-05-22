@@ -50,7 +50,6 @@ hr{
     display: flex;
     justify-content: center;
     align-items: center;
-    
 }
 .list{
     border: 1px solid black;
@@ -77,6 +76,7 @@ hr{
 </style>
 
 <script>
+import {mapState,mapActions,mapGetters} from 'vuex'
 export default {
   name: 'contentList',
   data(){
@@ -87,6 +87,9 @@ export default {
   },
   
   methods:{
+      ...mapActions([
+          'changeFooter'
+      ]),
       getData(){
         this.loading = true;
         this.$http({
@@ -102,6 +105,7 @@ export default {
   },
   mounted(){
       this.getData();
+      this.changeFooter('index');
   },
   //组件复用
   watch:{

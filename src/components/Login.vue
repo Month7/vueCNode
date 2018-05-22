@@ -7,16 +7,43 @@
         
     </div>
 </template>
-
 <script>
+import {mapState,mapActions,mapGetters} from 'vuex'
 export default {
     name:'Login',
     data(){
         return {
-            accessToken:''
+            accessToken:'',
+            isLogin:sessionStorage.getItem("isLogin") || false,
         }
     },
+    mounted(){
+       this.changeFooter('login');
+    },
     methods:{
+        ...mapActions([
+            'changeFooter'
+        ]),
+        getData(loginname){
+            this.$http({
+                url:`https://cnodejs.org/api/v1/user/${loginname}`,
+                method:'get',
+            }).then((response)=>{
+                if(response.data.success === true){
+                    var data = JSON.stringify(response.data.data);
+                    sessionStorage.setItem('data',data);
+                    sessionStorage.setItem('loginname',response.data.data.loginname)
+                }
+            }).then(()=>{
+                this.$router.push({
+                    path: '/userinfo',
+                    name: 'userinfo',
+                    params:{
+                        loginname:loginname
+                    }
+                })
+            })
+        },
         login(token){
             this.$http({
                 url:'https://cnodejs.org/api/v1/accesstoken',
@@ -26,11 +53,9 @@ export default {
                 }
             }).then((response)=>{
                 if(response.data.success == true){
-                    sessionStorage.setItem('username',response.data.loginname);
                     sessionStorage.setItem('isLogin',true);
-                    this.$router.push({
-                       path: '/'
-                    })
+                    var loginname = response.data.loginname;
+                    this.getData(loginname);
                 }
             })
         }

@@ -7,16 +7,25 @@
   </div>
 </template>
 <script>
+import {mapState,mapActions,mapGetters} from 'vuex'
 export default {
   name:'Footer',
-  data(){
-      return {
-          clicked:'index'
+//   data(){
+//       return {
+//           clicked:this.footerState
+//       }
+//   },
+  computed:{
+      ...mapGetters([
+          'footerState'
+      ]),
+      clicked(){
+          return this.footerState
       }
   },
   methods:{
       change(data){
-          this.clicked = data;
+        //   this.clicked = data;
       }
   },
 }

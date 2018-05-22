@@ -4,11 +4,19 @@ import cHeader from '../components/Header.vue'
 import content from '../components/Content.vue'
 import home from '../components/Home.vue'
 import login from '../components/Login.vue'
+import userinfo from '../components/UserInfo.vue'
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/userinfo',
+      name: 'userinfo',
+      components: {
+        lists: userinfo
+      }
+    },
     // 主页
     {
       path: '/',
@@ -23,7 +31,6 @@ export default new Router({
       path: '/login',
       name: 'login',
       components: {
-        nav: cHeader,
         lists: login
       }
     },
@@ -91,4 +98,3 @@ export default new Router({
     }
   ]
 })
-

@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import store from './store'
 
 Vue.prototype.$http = axios;
 
@@ -13,12 +14,19 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
 router.beforeEach((to, from, next) => {
-  if (to.path === '/login') {
+  if (to.path === '/index' || to.path === '/') {
     next()
+  } else if (to.path === '/login') {
+    if (!sessionStorage.getItem('isLogin') === true) {
+      next()
+    } else {
+      next({path: '/userinfo'})
+    }
   } else {
     if (!sessionStorage.getItem('isLogin') === true) {
       next({path: '/login'})
