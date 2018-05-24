@@ -10,12 +10,12 @@
               </div>
               <div>
                   <div>
-                      <router-link :to="{}">{{list.author.loginname}}</router-link>
+                       <router-link :to="{name:'userinfo',params:{loginname:list.author.loginname}}">{{list.author.loginname}}</router-link>
                   </div>
               </div>
           </div>
           <div class="title">
-              <router-link :to="{}">{{list.title}}</router-link>
+              <router-link :to="{name:'article',params:{id:list.id}}">{{list.title}}</router-link>
           </div>
           <hr>
           <div class="count">
@@ -30,52 +30,15 @@
               </div>
           </div>
       </div>
+      <cFooter></cFooter>
   </div>
 </template>
 <style scoped>
- .all{
-    height: 100%;
-}
-hr{
-    margin: 1rem;
-}
-.count{
-    display: flex;
-    justify-content: space-around;
-}
-.loading{
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.list{
-    border: 1px solid black;
-    padding: 1rem;
-}
-.list .author{
-    font-size: 12px;
-    display: flex;
-    height: 4rem;
-}
-.list .author a{
-    color: black;
-    text-decoration: none;
-}
-.list .author .author-image img{
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-}
-.title a{
-    color: black;
-    text-decoration: none;
-}
+@import url('../assets/postlist.css');
 </style>
 <script>
 import {mapState,mapActions,mapGetters} from 'vuex'
+import cFooter from './Footer.vue'
 export default {
   name: 'contentList',
   data(){
@@ -84,7 +47,9 @@ export default {
           loading: true,
       }
   },
-  
+  components:{
+      cFooter
+  },
   methods:{
         ...mapActions([
           'changeFooter'

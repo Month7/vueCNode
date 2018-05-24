@@ -36,8 +36,8 @@ export default {
                 }
             }).then(()=>{
                 this.$router.push({
-                    path: '/userinfo',
-                    name: 'userinfo',
+                    path: '/self',
+                    name: 'self',
                     params:{
                         loginname:loginname
                     }
@@ -54,6 +54,8 @@ export default {
             }).then((response)=>{
                 if(response.data.success == true){
                     sessionStorage.setItem('isLogin',true);
+                    sessionStorage.setItem('accesstoken',this.accessToken);
+                    sessionStorage.setItem('userId',response.data.id);
                     var loginname = response.data.loginname;
                     this.getData(loginname);
                 }

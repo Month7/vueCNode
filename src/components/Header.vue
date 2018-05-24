@@ -25,21 +25,25 @@ export default {
 </script>
 <style scoped>
   .header{
-    background: rgb(68,68,68);
+    /* background: rgb(4,170,224); */
     height: 5rem;
     width: 100%;
     display: flex;
     padding: 0;
+    z-index: 99;
+    background: #fff;
+    border-bottom: 1px solid gray;
   } 
   a{
     text-decoration: none;
-    color: #fff;
+    color: black;
     padding: 1rem;
     line-height: 3rem;
     margin: 0;
     width: 16%;
   }
   .active{
-    background: gray;
+    /* background: rgb(4,195,224); */
+    border-bottom: solid 0.3rem rgb(4,195,224);
   }
 </style>

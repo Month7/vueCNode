@@ -1,12 +1,8 @@
 <template>
     <div class="userInfo">
-        <div class="loading" v-if="loading">
-            <img src="../../static/loading.gif"/>
-        </div>
-        <div v-else>
         <div class="user-header">
-            <span>个人资料</span>
-            <span class="back clearfix" @click="goBack"><i class="glyphicon glyphicon-chevron-left"></i></span>
+            <span>个人中心</span>
+            <div class="exitDiv"><router-link :to="{name:'login'}" class="exit" @click.native="exit">退出</router-link></div>
         </div>
         <div class="user-content">
             <div class="user-image">
@@ -54,10 +50,8 @@
                 </li>
             </ul>
         </div>
-        <!-- <cFooter></cFooter> -->
+        <cFooter></cFooter>
     </div>
-        </div>
-        
 </template>
 <script>
 import {mapState,mapActions,mapGetters} from 'vuex'
@@ -66,10 +60,9 @@ export default {
     name:'UserInfo',
     data(){
         return {
-            data:{},
+            data:JSON.parse(sessionStorage.getItem('data')) || '',
             topics:'reply',
-            loginname:'',
-            loading: true
+            loginname:sessionStorage.getItem('loginname')
         }
     },
     components:{
@@ -108,20 +101,16 @@ export default {
         }
     },
     methods:{
-        goBack(){
-            this.$router.back(-1);
-        },
         getData(loginname){
+            
             this.$http({
                 url:`https://cnodejs.org/api/v1/user/${loginname}`,
                 method:'get',
             }).then((response)=>{
                 if(response.data.success === true){
-                    // sessionStorage.removeItem('userdata');
-                    // var data = JSON.stringify(response.data.data);
-                    // sessionStorage.setItem('userdata',data);
-                    this.data = response.data.data;
-                    this.loading = false;
+                    sessionStorage.removeItem('data');
+                    var data = JSON.stringify(response.data.data);
+                    sessionStorage.setItem('data',data);
                 }
             })
         },
@@ -137,22 +126,15 @@ export default {
  
     },
     mounted(){
-        // this.changeFooter('login');
-        this.getData(this.$route.params.loginname);
+        this.changeFooter('login');
+        this.getData(this.loginname);
     }
 }
 </script>
 <style>
-    .back{
-        float: left;
-        position: absolute;
-        top:50%;
-        transform: translateY(-50%);
-        left: 1rem;
-    }
-    .topics-title{
-        padding-left: 4rem;
-    }
+.topics-title{
+    padding-left: 4rem;
+}
     .userInfo{
         position: relative;
     }
@@ -234,15 +216,12 @@ export default {
         font-weight: bold;
     }
     .user-header{
-        height: 5rem;
+        height: 4rem;
         text-align: center;
-        line-height: 5rem;
+        line-height: 4rem;
         background: rgb(68,68,68);
         color: #fff;
-        position: fixed;
-        top:0;
-        width: 100%;
-        z-index: 99;
+        margin-top:-5rem;
     }
     .user-header::after{
         content: '';

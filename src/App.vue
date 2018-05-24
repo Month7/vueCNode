@@ -2,7 +2,7 @@
   <div id="app">
     <router-view name="nav" class="nav"></router-view>
     <router-view name="lists" class="lists"></router-view>
-    <cFooter></cFooter>
+    <!-- <cFooter></cFooter> -->
   </div>
 </template>
 
@@ -16,7 +16,16 @@
     }
   }
 </script>
-
+<style>
+.loading{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
 <style>
 	html {
     background-color: #DDDDDD;

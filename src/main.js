@@ -18,21 +18,38 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+// router.beforeEach((to, from, next) => {
+//   if (to.path === '/index' || to.path === '/') {
+//     next()
+//   } else if (to.path === '/login') {
+//     if (!sessionStorage.getItem('isLogin') === true) {
+//       next()
+//     } else {
+//       next({path: '/self'})
+//     }
+//   } else {
+//     if (!sessionStorage.getItem('isLogin') === true) {
+//       next({path: '/login'})
+//     } else {
+//       next()
+//     }
+//   }
+// })
 router.beforeEach((to, from, next) => {
-  if (to.path === '/index' || to.path === '/') {
-    next()
-  } else if (to.path === '/login') {
-    if (!sessionStorage.getItem('isLogin') === true) {
-      next()
-    } else {
-      next({path: '/userinfo'})
-    }
-  } else {
-    if (!sessionStorage.getItem('isLogin') === true) {
+  if (to.path === '/create' || to.path === '/message') {
+    if (!sessionStorage.getItem('isLogin') === true) { // 未登录
       next({path: '/login'})
     } else {
       next()
     }
+  } else if (to.path === '/login') {
+    if (!sessionStorage.getItem('isLogin') === true) {
+      next()
+    } else {
+      next({path: '/self'})
+    }
+  } else {
+    next()
   }
 })
 Vue.filter('filterTime', function (str) {
