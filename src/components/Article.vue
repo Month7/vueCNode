@@ -218,6 +218,9 @@ export default {
         height: 100%;
         width: 100%;
     }
+    .replies{
+        padding-bottom: 3.5rem;
+    }
     .replies li{
         list-style-type: none;
         border-bottom: 1px solid #eee;

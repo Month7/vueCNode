@@ -1,5 +1,5 @@
 <template>
-    <div class="userInfo">
+    <div class="userInfo" style="position:relative">
         <div class="user-header">
             <span>个人中心</span>
             <div class="exitDiv"><router-link :to="{name:'login'}" class="exit" @click.native="exit">退出</router-link></div>
@@ -32,7 +32,9 @@
                         <img :src="data.avatar_url"/>
                         {{data.loginname}}
                     </div>
-                    <div class="topics-title">{{item.title}}</div>
+                    <div class="topics-title">
+                        <router-link :to="{name:'article',params:{id:item.id}}">{{item.title}}</router-link>
+                    </div>
                 </li>
                 
             </ul>
@@ -46,7 +48,7 @@
                         <img :src="data.avatar_url"/>
                         {{data.loginname}}
                     </div>
-                    <div class="topics-title">{{item.title}}</div>
+                    <div class="topics-title"><router-link :to="{name:'article',params:{id:item.id}}">{{item.title}}</router-link></div>
                 </li>
             </ul>
         </div>
@@ -131,10 +133,10 @@ export default {
     }
 }
 </script>
-<style>
-.topics-title{
-    padding-left: 4rem;
-}
+<style scoped>
+    .topics-title{
+        padding-left: 4rem;
+    }
     .userInfo{
         position: relative;
     }
@@ -235,7 +237,7 @@ export default {
         margin-right: 1rem;
     }
     .exit{
-        /* color: gray; */
+        
         border-radius: 0.6rem;
         outline: none;
         border: 0.1rem solid #fff;

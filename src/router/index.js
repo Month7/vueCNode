@@ -8,6 +8,7 @@ import self from '../components/Self.vue'
 import article from '../components/Article.vue'
 import create from '../components/Create.vue'
 import userinfo from '../components/UserInfo.vue'
+import message from '../components/Message.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -63,7 +64,7 @@ export default new Router({
       path: '/message',
       name: 'message',
       components: {
-        nav: cHeader
+        lists: message
       }
     },
     // 精华列表
