@@ -124,6 +124,10 @@ export default {
         ]),
         exit(){
             sessionStorage.clear();
+            this.$router.push({
+                path:'/login',
+                name:'login'
+            })
         },
  
     },
