@@ -1,9 +1,9 @@
 <template>
-    <div class="message">
-        <div class="loading" v-if="loading">
-            <img src="../../static/loading.gif"/>
-        </div>
-        <div class="m" v-else>
+  <div class="message">
+    <!-- <div class="loading" v-if="loading">
+        <img src="../../static/loading.gif"/>
+    </div> -->
+        <div class="m">
             <div class="m-header">
                 消息中心
             </div>
@@ -75,7 +75,7 @@
                     </ul>
                 <!-- </transition-group> -->
             </div>
-            <cFooter></cFooter>
+            <!-- <cFooter></cFooter> -->
         </div>
     </div>
 </template>
@@ -159,9 +159,14 @@ ul li{
 /**动画*/
 </style>
 <script>
-import {mapState,mapActions,mapGetters} from 'vuex'
-import cFooter from './Footer.vue'
+import axios from 'axios';
 export default {
+    name: 'Message',
+		asyncData({store}) {
+			axios({
+
+			})
+		},
     data(){
         return {
             loading:true,
@@ -170,12 +175,10 @@ export default {
         }
     },
     components:{
-        cFooter
+        
     },
     methods:{
-        ...mapActions([
-            'changeFooter'
-        ]),
+        
         getData(){
             this.$http({
                 url:`https://cnodejs.org/api/v1/messages?&accesstoken=${sessionStorage.getItem('accesstoken')}`,
@@ -189,8 +192,8 @@ export default {
         }
     },
     mounted(){
-        this.changeFooter('message');
-        this.getData();
+      this.changeFooter('message');
+      this.getData();
     }
 }
 </script>

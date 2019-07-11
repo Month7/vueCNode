@@ -1,9 +1,7 @@
 <template>
-  <div class="all">
-      <div class="loading" v-if="loading">
-          <img src="../../static/loading.gif"/>
-      </div>
-      <div class="list" v-else v-for="(list,index) in lists" :key="index">
+    <div class="all">
+
+      <div class="list" v-for="(list,index) in lists" :key="index">
           <div class="author">
               <div class="author-image">
                   <router-link :to="{name:'userinfo',params:{loginname:list.author.loginname}}"><img :src="list.author.avatar_url"/></router-link>
@@ -18,7 +16,7 @@
               <router-link :to="{name:'article',params:{id:list.id}}">{{list.title}}</router-link>
           </div>
           <hr>
-          <div class="count">
+          <div class="count" @click="gotoDetail('article',{id:list.id})">
               <div>
                   <i class="glyphicon glyphicon-eye-open"></i>{{list.visit_count}}
               </div>
@@ -30,57 +28,60 @@
               </div>
           </div>
       </div>
-    <cFooter></cFooter>
   </div>
-
 </template>
-
-
+<script>
+  import axios from 'axios';
+  export default {
+    name: 'PostList',
+    mounted(){
+      this.dataPromise && this.dataPromise.then((data)=>{
+        console.log('dataPromise调用');
+      })
+    },
+    methods: {
+      gotoDetail(name,params){
+        this.$route.push({name: name,params: params})
+      }
+    },
+    async asyncData({store, route}){
+      await axios({
+        url: `https://cnodejs.org/api/v1/topics?tab=${route.query.tab}`,
+        method: 'get',
+      }).then((res)=>{
+        return store.dispatch('setData',res.data.data)
+      })
+      return {store,route};
+    },
+    data () {
+      return {
+	      mode: process.env.VUE_ENV,
+        count: 2,
+        loading: true
+      }
+    },
+    computed:{
+      num(){
+        return this.$store.state.num;
+      },
+      lists(){
+        return this.$store.state.data;
+      }
+    },
+    mounted(){
+      console.log('localSroarage',localStorage.getItem('test'))
+    },
+    watch:{
+      $route(){
+        console.log('路由改变!');
+        this.$forceUpdate();
+      }
+    }
+  }
+</script>
 <style scoped>
 @import url('../assets/postlist.css');
-</style>
-
-<script>
-import cFooter from './Footer.vue';
-import {mapState,mapActions,mapGetters} from 'vuex'
-export default {
-  name: 'contentList',
-  data(){
-      return {
-          lists : {},
-          loading: true,
-      }
-  },
-  components:{
-    cFooter
-  },
-  methods:{
-      ...mapActions([
-          'changeFooter'
-      ]),
-      getData(){
-        this.loading = true;
-        this.$http({
-            url:`https://cnodejs.org/api/v1/topics/?tab=${this.$route.params.tab}`,
-            method:'get',
-        }).then((response)=>{
-            if(response.data.success == true){
-                this.lists = response.data.data;
-                this.loading = false;
-            }
-        })
-      },
-  },
-  mounted(){
-      this.getData();
-      this.changeFooter('index');
-  },
-  //组件复用
-  watch:{
-			$route(){
-				this.getData();
-			}
-	}
+.title{
+  text-align: left;
 }
-</script>
-
+</style>

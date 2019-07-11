@@ -1,125 +1,82 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import cHeader from '../components/Header.vue'
-import content from '../components/PostList.vue'
-import home from '../components/Home.vue'
-import login from '../components/Login.vue'
-import self from '../components/Self.vue'
-import article from '../components/Article.vue'
-import create from '../components/Create.vue'
-import userinfo from '../components/UserInfo.vue'
-import message from '../components/Message.vue'
+const Article = () => import('@/components/Article');
+const Create = () => import('@/components/Create');
+const Footer = () => import('@/components/Footer');
+const cHeader = () => import('@/components/Header');
+const Home = () => import('@/components/Home');
+const Login = () => import('@/components/Login');
+const Message = () => import('@/components/Message');
+const PostList = () => import('@/components/PostList');
+const Self = () => import('@/components/Self');
+const UserInfo = () => import('@/components/UserInfo');
+
 Vue.use(Router)
 
-export default new Router({
-  // mode: 'history',
-  routes: [
-    {
-      path: '/user/:loginname',
-      name: 'userinfo',
-      components: {
-        lists: userinfo
+export function createRouter () {
+  return new Router({
+    mode: 'history', // 注意这里也是为history模式
+    routes: [
+      {
+        path: '/test',
+        name: 'Test',
+        component: () => import('@/components/Test') // 异步组件
+      },{
+        path: '/',
+        name: 'index',
+        components: {
+          nav: cHeader,
+          lists: PostList
+        }
+      },{    // 精华列表
+        path: '/?tab=:tab',
+        name: 'good',
+        components: {
+          nav: cHeader,
+          lists: PostList
+        }
+      },{    // 分享列表
+        path: '/?tab=:tab',
+        name: 'share',
+        components: {
+          nav: cHeader,
+          lists: PostList
+        }
+      },{    // 问答列表
+        path: '/?tab=:tab',
+        name: 'ask',
+        components: {
+          nav: cHeader,
+          lists: PostList
+        }
+      },{    // 测试列表
+        path: '/?tab=:tab',
+        name: 'test',
+        components: {
+          nav: cHeader,
+          lists: PostList
+        }
+      },{    // 招聘列表
+        path: '/?tab=:tab',
+        name: 'job',
+        components: {
+          nav: cHeader,
+          lists: PostList
+        }
+      },{ // 全部列表
+        path: '/?tab=:tab',
+        name: 'all',
+        components: {
+          nav: cHeader,
+          lists: PostList
+        }
+      },{
+        path: '/article/:id',
+        name: 'article',
+        components: {
+          lists: Article
+        }
       }
-    },
-    {
-      path: '/create',
-      name: 'create',
-      components: {
-        lists: create
-      }
-    },
-    {
-      path: '/article/:id',
-      name: 'article',
-      components: {
-        lists: article
-      }
-    },
-    {
-      path: '/self',
-      name: 'self',
-      components: {
-        lists: self
-      }
-    },
-    // 主页
-    {
-      path: '/',
-      name: 'index',
-      components: {
-        nav: cHeader,
-        lists: home
-      }
-    },
-    // 登录
-    {
-      path: '/login',
-      name: 'login',
-      components: {
-        lists: login
-      }
-    },
-    // 消息
-    {
-      path: '/message',
-      name: 'message',
-      components: {
-        lists: message
-      }
-    },
-    // 精华列表
-    {
-      path: '/?tab=:tab',
-      name: 'good',
-      components: {
-        nav: cHeader,
-        lists: content
-      }
-    },
-    // 分享列表
-    {
-      path: '/?tab=:tab',
-      name: 'share',
-      components: {
-        nav: cHeader,
-        lists: content
-      }
-    },
-    // 问答列表
-    {
-      path: '/?tab=:tab',
-      name: 'ask',
-      components: {
-        nav: cHeader,
-        lists: content
-      }
-    },
-    // 测试列表
-    {
-      path: '/?tab=:tab',
-      name: 'test',
-      components: {
-        nav: cHeader,
-        lists: content
-      }
-    },
-    // 招聘列表
-    {
-      path: '/?tab=:tab',
-      name: 'job',
-      components: {
-        nav: cHeader,
-        lists: content
-      }
-    },
-    // 全部列表
-    {
-      path: '/?tab=:tab',
-      name: 'all',
-      components: {
-        nav: cHeader,
-        lists: content
-      }
-    }
-  ]
-})
+    ]
+  })
+}

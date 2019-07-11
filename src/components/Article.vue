@@ -1,19 +1,16 @@
 <template>
     <div class="article">
-        <div class="loading" v-if="loading">
-            <img src="../../static/loading.gif"/>
+      <div>
+        <div class="article-header">
+          <span class="back clearfix" @click="goBack"><i class="glyphicon glyphicon-chevron-left"></i></span>
+          <h4>主题</h4>
         </div>
-        <div v-else>
-            <div class="article-header">
-                <span class="back clearfix" @click="goBack"><i class="glyphicon glyphicon-chevron-left"></i></span>
-                <h4>主题</h4>
-            </div>
-            <div class="article-username">
-                <router-link :to="{name:'userinfo',params:{loginname:reply.author.loginname}}">
-                    <img :src="reply.author.avatar_url"/>
-                    {{reply.author.loginname}}
-                </router-link>
-            </div>
+        <div class="article-username">
+          <router-link :to="{name:'userinfo',params:{loginname:reply.author.loginname}}">
+            <img :src="reply.author.avatar_url"/>
+              {{reply.author.loginname}}
+          </router-link>
+        </div>
             <div class="article-title">
                 <div class="tit">
                     {{reply.title}}
@@ -65,16 +62,25 @@
     </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
-    name:'Article',
+		name:'Article',
+		async asyncData({store, route}) {
+			await axios({
+				url: `https://cnodejs.org/api/v1/topic/${route.params.id}`,
+				method: 'get'
+			}).then((res)=> {
+				if(res.data.success){
+					store.dispatch('setArticleDetail',res.data.data);
+				}
+			}).catch((e)=>{
+				console.log(e);
+			})
+			return {store, route}
+		},
     data(){
         return {
-            loading: true,
-            reply:{
-                author:{
-                    loginname:''
-                }
-            },
+            
             isUp:'down',
             sendText:'',
             relpyNum:'',
@@ -103,24 +109,24 @@ export default {
                 }).then((response)=>{
                     if(response.data.success == true){
                         this.myReplyText = '';
-                        this.getData();
+                        // 
                     }
                 })
         },
         sendTxt(id,reply_id){
             this.$http({
-                url:`https://cnodejs.org/api/v1//topic/${id}/replies`,
+                url:`https://cnodejs.org/api/v1/topic/${id}/replies`,
                 method:'post',
                 data:{
-                    content:this.sendText,
-                    accesstoken:sessionStorage.getItem('accesstoken'),
-                    reply_id:reply_id
+                    content: this.sendText,
+                    accesstoken: sessionStorage.getItem('accesstoken'),
+                    reply_id: reply_id
                 }
             }).then((response)=>{
                 if(response.data.success == true){
                     this.relpyNum = '';
                     this.sendText = '';
-                    this.getData();
+                    
                 }
             })
         },
@@ -137,17 +143,17 @@ export default {
         goBack(){
             this.$router.back(-1);
         },
-        getData(){
-            this.$http({
-                url:`https://cnodejs.org/api/v1/topic/${this.$route.params.id}`,
-                method:'get'
-            }).then((response)=>{
-                if(response.data.success == true){
-                    this.reply = response.data.data;
-                    this.loading = false;
-                }
-            })
-        },
+        // getData(){
+        //     this.$http({
+        //         url:`https://cnodejs.org/api/v1/topic/${this.$route.params.id}`,
+        //         method:'get'
+        //     }).then((response)=>{
+        //         if(response.data.success == true){
+        //             this.reply = response.data.data;
+        //             this.loading = false;
+        //         }
+        //     })
+        // },
         up(id){
             var accesstoken = sessionStorage.getItem('accesstoken');
             if(accesstoken){
@@ -160,7 +166,7 @@ export default {
                 }).then((response)=>{
                     if(response.data.success === true){
                         this.isUp = response.data.action;
-                        this.getData();
+                        
                     }
                 }).catch((error)=>{
                     console.log(error)
@@ -172,11 +178,12 @@ export default {
         }
     },
     mounted(){
-        this.getData();
+        
     },
     computed:{
-        upsCount(){ 
-        }
+        reply(){
+					return this.$store.state.acticleDeatil;
+				}
     }
 }
 </script>

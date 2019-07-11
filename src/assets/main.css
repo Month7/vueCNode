@@ -1,0 +1,22 @@
+html {
+  background-color: #DDDDDD;
+}
+html,body,#app {
+  height: 100%;
+}
+.nav{
+  height: 5rem;
+  position: fixed;
+  top:0;
+  width: 100%;
+}
+.lists{
+  overflow-x:auto;  
+  overflow-y:scroll;  
+  background: #fff;
+  padding-bottom: 4rem;
+  height: 100%;
+}
+body,div,span,a,p,ul,li {
+  margin: 0;
+}
