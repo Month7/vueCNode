@@ -1,9 +1,6 @@
 <template>
     <div class="create">
-        <div v-if="loading">
-            <img src="../../static/loading.gif"/>
-        </div>
-        <div v-else>
+        <div>
             <div class="create-header">
                 发布
                 <span class="send" @click="newArticle"><i class="glyphicon glyphicon-send"></i></span>
@@ -13,7 +10,7 @@
             </div>
             <div class="create-type">
                <select v-model="type">
-                    <option value="">请选择</option>
+                    <option value="dev">请选择</option>
                     <option value="share">分享</option>
                     <option value="ask">问答</option>
                     <option value="job">招聘</option>
@@ -24,30 +21,48 @@
                 <textarea placeholder="内容..." v-model="content"></textarea>
             </div>
         </div>
-        <cFooter></cFooter>
+        <cFooter status='create'></cFooter>
     </div>
 </template>
 <script>
-import {mapActions} from 'vuex'
 import cFooter from './Footer.vue'
+import axios from 'axios'
 export default {
     name:'Create',
     data(){
         return {
-            loading:true,
-            title:'',
-            type:'',
-            content:''
+						title: this.$store.state.createArticleData.title,
+						content: this.$store.state.createArticleData.content,
+            type:this.$store.state.createArticleData.type,
+            accesstoken: null,
         }
-    },
+		},
+		computed: {
+
+		},
     methods:{
         newArticle(){
+            if(!this.accesstoken){ // 未登录
+							var params = {
+								url: 'create',
+								title: this.title,
+								type: this.type,
+								content: this.content,
+								from: 'create'
+							}
+							this.$router.push({
+								path: '/login',
+								name: 'login',
+								params: params,
+							})
+							return;
+            }
             this.type = 'dev';
-            this.$http({
+            axios({
                 url:'https://cnodejs.org/api/v1/topics',
                 method:'post',
                 data:{
-                    accesstoken:sessionStorage.getItem('accesstoken'),
+                    accesstoken: sessionStorage.getItem('accesstoken'),
                     title:this.title,
                     tab:this.type,
                     content:this.content
@@ -64,13 +79,10 @@ export default {
                 }
             })
         },
-        ...mapActions([
-            'changeFooter'
-        ])
+
     },
     mounted(){
-        this.changeFooter('create');
-        this.loading = false;
+
     },
     components:{
         cFooter
@@ -86,6 +98,8 @@ export default {
     text-align: center;
     line-height: 5rem;
     border-bottom: 1px solid #eee;
+    background: #fff;
+    z-index: 999;
 }
 .create-title input{
     width: 100%;

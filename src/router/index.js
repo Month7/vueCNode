@@ -18,10 +18,6 @@ export function createRouter () {
     mode: 'history', // 注意这里也是为history模式
     routes: [
       {
-        path: '/test',
-        name: 'Test',
-        component: () => import('@/components/Test') // 异步组件
-      },{
         path: '/',
         name: 'index',
         components: {
@@ -76,7 +72,38 @@ export function createRouter () {
         components: {
           lists: Article
         }
+      },{
+        path: '/create',
+        name: 'create',
+        components: {
+          lists: Create
+        }
+      },{
+        path: '/login',
+        name: 'login',
+        components: {
+          lists: Login
+        }
+      },{
+        path: '/message',
+        name: 'message',
+        components: {
+          lists: Message
+        }
+      },{
+        path: '/user/:loginname',
+        name: 'userinfo',
+        components: {
+          lists: UserInfo
+        }
+      },{
+        path: '/self',
+        name: 'self',
+        components: {
+          lists: Self
+        }
       }
+
     ]
   })
 }

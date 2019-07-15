@@ -11,8 +11,11 @@ export function createStore(){
       num: 1,
       data: null,
       lists: [],
-      footerStatus: 0,   
-      acticleDeatil: null    
+      footerStatus: null,   
+      acticleDeatil: null,
+      messages: null,
+      userInfo: null,   
+      createArticleData: {},  // 发布新文章的草稿的缓存 
     },
     actions: actions,
     mutations: mutations,

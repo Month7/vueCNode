@@ -28,25 +28,31 @@
               </div>
           </div>
       </div>
+			<Footer status='index'></Footer>
   </div>
 </template>
 <script>
-  import axios from 'axios';
+	import axios from 'axios';
+	import Footer from './Footer'
   export default {
     name: 'PostList',
     mounted(){
       this.dataPromise && this.dataPromise.then((data)=>{
         console.log('dataPromise调用');
       })
-    },
+		},
+		components: {
+			Footer
+		},
     methods: {
       gotoDetail(name,params){
         this.$route.push({name: name,params: params})
       }
     },
     async asyncData({store, route}){
+      let tab = route.query.tab || 'all'
       await axios({
-        url: `https://cnodejs.org/api/v1/topics?tab=${route.query.tab}`,
+        url: `https://cnodejs.org/api/v1/topics?tab=${tab}`,
         method: 'get',
       }).then((res)=>{
         return store.dispatch('setData',res.data.data)
@@ -69,12 +75,13 @@
       }
     },
     mounted(){
-      console.log('localSroarage',localStorage.getItem('test'))
+      this.$store.dispatch('setFooterStatus','index')
+      console.log('localSroarage',localStorage.getItem('test'));
     },
     watch:{
       $route(){
-        console.log('路由改变!');
-        this.$forceUpdate();
+        // console.log('路由改变!');
+        // this.$forceUpdate();
       }
     }
   }

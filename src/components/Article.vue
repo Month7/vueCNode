@@ -80,14 +80,23 @@ export default {
 		},
     data(){
         return {
-            
-            isUp:'down',
-            sendText:'',
-            relpyNum:'',
-            myReplyText:''
+            accesstoken: null,
+            isUp: 'down',
+            sendText: '',
+            relpyNum: '',
+            myReplyText: ''
         }
-    },
+		},
+		mounted(){
+			this.initData();
+		},
     methods:{
+			initData(){
+				if(sessionStorage){
+					this.accesstoken = sessionStorage.getItem('accesstoken');
+				}
+
+			},
         toggtlRelpyText(index,loginname){
             if(this.relpyNum == index){
                 this.relpyNum = '';
@@ -99,12 +108,15 @@ export default {
             }
         },
         sendMyTxt(id){
+					if(sessionStorage) {
+						var accesstoken = sessionStorage.getItem('accesstoken')
+					}
             this.$http({
                 url:`https://cnodejs.org/api/v1//topic/${id}/replies`,
                 method:'post',
                 data:{
                     content:this.myReplyText,
-                    accesstoken:sessionStorage.getItem('accesstoken'),
+                    accesstoken: accesstoken,
                 }
                 }).then((response)=>{
                     if(response.data.success == true){
@@ -114,12 +126,15 @@ export default {
                 })
         },
         sendTxt(id,reply_id){
+					if(sessionStorage){
+						var accesstoken = sessionStorage.getItem('accesstoken')
+					}
             this.$http({
                 url:`https://cnodejs.org/api/v1/topic/${id}/replies`,
                 method:'post',
                 data:{
                     content: this.sendText,
-                    accesstoken: sessionStorage.getItem('accesstoken'),
+                    accesstoken: accesstoken,
                     reply_id: reply_id
                 }
             }).then((response)=>{
@@ -131,31 +146,24 @@ export default {
             })
         },
         isUps(array){
-            var accesstoken = sessionStorage.getItem('accesstoken');
-            if(accesstoken){
-                var id = sessionStorage.getItem('userId')
-                return array.indexOf(id) >= 0;
-            }
-            else{
-                return false;
-            }
+          // if(sessionStorage){
+          //   var accesstoken = sessionStorage.getItem('accesstoken');
+          // }
+          // if(accesstoken){
+          //   var id = sessionStorage.getItem('userId')
+          //   return array.indexOf(id) >= 0;
+          // }
+          return false;
         },
         goBack(){
             this.$router.back(-1);
         },
-        // getData(){
-        //     this.$http({
-        //         url:`https://cnodejs.org/api/v1/topic/${this.$route.params.id}`,
-        //         method:'get'
-        //     }).then((response)=>{
-        //         if(response.data.success == true){
-        //             this.reply = response.data.data;
-        //             this.loading = false;
-        //         }
-        //     })
-        // },
         up(id){
-            var accesstoken = sessionStorage.getItem('accesstoken');
+					console.log('up方法还调用么');
+					if(sessionStorage) {
+						var accesstoken = sessionStorage.getItem('accesstoken');
+					}
+            
             if(accesstoken){
                 this.$http({
                 url:`https://cnodejs.org/api/v1/reply/${id}/ups`,
@@ -173,90 +181,90 @@ export default {
                 })
             }
             else{
-                
+                alert('请先登录!');
             }
         }
     },
     mounted(){
-        
+      this.$store.dispatch('setFooterStatus','hidden')
     },
     computed:{
-        reply(){
-					return this.$store.state.acticleDeatil;
-				}
+      reply(){
+				return this.$store.state.acticleDeatil;
+			}
     }
 }
 </script>
 <style>
+    html,body,#app {
+      height: 100%;
+      width: 100%;
+			overflow-x: hidden;
+    }
     .myReply{
-        position: fixed;
-        bottom: 0;
-        background: #fff;
-        z-index: 99;
-        width: 100%;
-        height: 4rem;
-        margin: 0;
-        padding: 0;
-        left: 0;
-        display: flex;
-        border-top:1px solid #80bd01;
+      position: fixed;
+      bottom: 0;
+      background: #fff;
+      z-index: 99;
+      width: 100%;
+      height: 4rem;
+      margin: 0;
+      padding: 0;
+      left: 0;
+      display: flex;
+      border-top:1px solid #80bd01;
     }
     .myReply input{
-        outline: none;
-        width: 90%;
-        border: none;
+      outline: none;
+      width: 90%;
+      border: none;
     }
     .myReply span{
-        color: #80bd01;
-        
-        display: block;
-        height: 100%;
-        line-height: 4rem;
-        font-size: 2.5rem;
+      color: #80bd01;
+      display: block;
+      height: 100%;
+      line-height: 4rem;
+      font-size: 2.5rem;
     }
     .up{
-        color: #80bd01;
+      color: #80bd01;
     }
     *{
-        padding: 0;
-        margin: 0;
-    }
-    html,body,#app {
-        height: 100%;
-        width: 100%;
+      padding: 0;
+      margin: 0;
     }
     .replies{
-        padding-bottom: 3.5rem;
+      padding-bottom: 3.5rem;
     }
     .replies li{
-        list-style-type: none;
-        border-bottom: 1px solid #eee;
-        height: auto;
-        min-height: 14rem;
-        padding: 2rem 1rem;
-        display: inline-block;
-        width: 100%;
-        padding-bottom: 0.5rem;
+      list-style-type: none;
+      border-bottom: 1px solid #eee;
+      height: auto;
+      min-height: 14rem;
+      padding: 2rem 1rem;
+      display: inline-block;
+      width: 100%;
+      padding-bottom: 0.5rem;
     }
     .article{
-        margin: 0 !important;
-        padding: 0!important;
-        height: 100%;
+      margin: 0 !important;
+      padding: 0!important;
+      height: 100%;
     }
     .article-header{
-        position: fixed;
-        top:0;
-        background: #fff;
-        width: 100%;
-        text-align: center;
-        border-bottom: 1px solid #eee;
+      position: fixed;
+      top:0;
+      background: #fff;
+      width: 100%;
+      display: flex;
+			justify-content: center;
+      border-bottom: 1px solid #eee;
         z-index: 99;
     }
     .article-header h4{
         font-weight: bold;
     }
     .article-username{
-        margin-top:4rem;
         display: flex;
         padding: 1rem;
         border-bottom: 1px solid #eee;
@@ -305,6 +313,7 @@ export default {
     .reply{
         float: left;
         width: 100%;
+				text-align: left;
     }
     .clearfix:after{
         zoom: 1;

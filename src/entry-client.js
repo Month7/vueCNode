@@ -3,7 +3,6 @@ import { createApp } from './main'
 import Vue from 'vue'
 const { app,router,store } = createApp();
 import Loading from './components/Loading' 
-
 if(window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__)
 }
@@ -36,22 +35,71 @@ router.onReady(()=>{
       return parseInt(time / 31536000000) + '年前'
     }
   })
+  // router.beforeEach((to,from)=>{
 
+  // })  
   router.beforeResolve((to, from, next) => {
     console.log('beforeResolve触发');
+    
     const matched = router.getMatchedComponents(to);
     const Constructor = Vue.extend(Loading);
     const loading = new Constructor();
     var component = loading.$mount();
     document.getElementById('app').appendChild(component.$el)
+
     Promise.all(matched.map(c => {
-      console.log(c.asyncData);
       if (c.asyncData) {
         return c.asyncData({ store, route: to })
       }
     })).then(() => {
       document.getElementById('app').removeChild(component.$el)
-      next()
+      if(to.path == '/message'){
+        if(sessionStorage){
+          var isLogin = sessionStorage.getItem('isLogin')
+          if(isLogin === 'true'){
+            next();
+          } else {
+            next({
+              name: 'login',
+              params: {
+                from: 'message'
+              },
+            })
+          }
+        }
+      } else if(to.path == '/self'){
+        if(sessionStorage){
+          var isLogin = sessionStorage.getItem('isLogin')
+          if(isLogin === 'true'){
+            next();
+          } else {
+            next({
+              name: 'login',
+              params: {
+                from: 'self'
+              },
+            })
+          }
+        }
+      } else {
+        next();
+      }
+      //   if(sessionStorage && sessionStorage.getItem('isLogin') == true){
+      //     next()
+      //   } else {
+      //     next({
+      //       name: 'login',
+      //       params: {
+      //         from: 'message'
+      //       },
+      //     })
+      //   }
+      // } else {
+      //   next();
+      // }
+      // console.log('sessionStorage能在entry-client.js中获取到么?',sessionStorage)
+      // next();
+      
     }).catch(next)
   })
 

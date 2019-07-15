@@ -52,32 +52,37 @@
                 </li>
             </ul>
         </div>
-        <cFooter></cFooter>
+        <cFooter status='self'></cFooter>
     </div>
 </template>
 <script>
-import {mapState,mapActions,mapGetters} from 'vuex'
 import cFooter from './Footer.vue'
 export default {
     name:'UserInfo',
     data(){
         return {
-            data:JSON.parse(sessionStorage.getItem('data')) || '',
+            data: JSON.parse(sessionStorage.getItem('data')) || '',
             topics:'reply',
             loginname:sessionStorage.getItem('loginname')
         }
     },
     components:{
-        cFooter
+      cFooter
     },
     computed:{
         hasRecentTopics(){
-            return this.data.recent_topics.length == 0;
+          return this.data.recent_topics.length == 0;
         },
         hasReplyTopics(){
-            return this.data.recent_replies.length == 0;
+          return this.data.recent_replies.length == 0;
         }
-    },
+		},
+		mounted(){
+			this.$router.push({
+				path: 'login',
+				name: 'login'
+			})
+		},
     filters:{
         filterTime(str){
             if (!str) return ''
@@ -104,7 +109,6 @@ export default {
     },
     methods:{
         getData(loginname){
-            
             this.$http({
                 url:`https://cnodejs.org/api/v1/user/${loginname}`,
                 method:'get',
@@ -119,9 +123,6 @@ export default {
         changeTopics(topic){
             this.topics = topic;
         },
-        ...mapActions([
-            'changeFooter'
-        ]),
         exit(){
             sessionStorage.clear();
             this.$router.push({
@@ -132,12 +133,15 @@ export default {
  
     },
     mounted(){
-        this.changeFooter('login');
-        this.getData(this.loginname);
+        // this.changeFooter('login');
+        // this.getData(this.loginname);
     }
 }
 </script>
 <style scoped>
+		#app{
+			margin-top: 0!important;
+		}
     .topics-title{
         padding-left: 4rem;
     }
@@ -227,7 +231,7 @@ export default {
         line-height: 4rem;
         background: rgb(68,68,68);
         color: #fff;
-        margin-top:-5rem;
+        margin-top: 0;
     }
     .user-header::after{
         content: '';

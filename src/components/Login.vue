@@ -4,52 +4,89 @@
         <div>
             <button class="btn btn-success button" type="button" @click="login">登录</button>
         </div>
-        
+        <Footer></Footer>
     </div>
 </template>
 <script>
-import {mapState,mapActions,mapGetters} from 'vuex'
+import Footer from './Footer'
+import axios from 'axios'
 export default {
     name:'Login',
     data(){
         return {
-            accessToken:'',
-            isLogin:sessionStorage.getItem("isLogin") || false,
+            accessToken: null,         // accessToken
+            isLogin: null
         }
     },
+    components:{
+        Footer
+    },
     mounted(){
-       this.changeFooter('login');
+       this.getIsLogin();
     },
     methods:{
-        ...mapActions([
-            'changeFooter'
-        ]),
+        getIsLogin(){
+            if(sessionStorage){
+                this.isLogin = sessionStorage.getItem("isLogin") || false
+            }
+				},
+				goPreviousUrl(path,params){
+					var params = this.$route.params;
+					console.log(params);
+          // console.log(this.$route)
+					// console.log(params);
+					const  _goPreviousUrl = (path,params) => {
+
+						
+					}
+          switch(params.from){      // 判断是从哪个页面跳转进的登录页面
+            case 'create':
+							this.$store.dispatch('setCreateArticleData',{
+								title: params.title,
+								type: params.type,
+								content: params.content,
+							})
+						  this.$router.go(-1);
+						break;
+						case 'self':           // 个人中心
+							_goPreviousUrl('self',{
+								title: params.title,
+								type: params.type,
+								content: params.content,
+							})
+						break;
+						case 'message':
+							console.log('怎么不跳转回message?')
+							console.log(this.$router);
+							this.$router.push({
+								path: '/message',
+								name: 'message'
+							})
+						break;
+					}
+					
+				},
         getData(loginname){
-            this.$http({
+            axios({
                 url:`https://cnodejs.org/api/v1/user/${loginname}`,
                 method:'get',
             }).then((response)=>{
                 if(response.data.success === true){
                     var data = JSON.stringify(response.data.data);
                     sessionStorage.setItem('data',data);
-                    sessionStorage.setItem('loginname',response.data.data.loginname)
+										sessionStorage.setItem('loginname',response.data.data.loginname)  // 登录的用户名
+										this.goPreviousUrl();
                 }
-            }).then(()=>{
-                this.$router.push({
-                    path: '/self',
-                    name: 'self',
-                    params:{
-                        loginname:loginname
-                    }
-                })
+            }).catch((e)=>{
+							console.log(e);
             })
         },
         login(token){
-            this.$http({
+            axios({
                 url:'https://cnodejs.org/api/v1/accesstoken',
                 method:'post',
                 data:{
-                    accesstoken:this.accessToken
+                    accesstoken: this.accessToken
                 }
             }).then((response)=>{
                 if(response.data.success == true){

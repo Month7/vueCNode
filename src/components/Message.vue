@@ -1,8 +1,5 @@
 <template>
   <div class="message">
-    <!-- <div class="loading" v-if="loading">
-        <img src="../../static/loading.gif"/>
-    </div> -->
         <div class="m">
             <div class="m-header">
                 消息中心
@@ -15,7 +12,7 @@
                 <!-- <transition-group name="msg"> -->
                     <!--已读消息-->
                     <ul v-if="show == 'has_read'">
-                        <li v-if="!messages.has_read_messages.length" style="text-align:center">
+                        <li v-if="!messages.has_read_messages || !messages.has_read_messages.length" style="text-align:center">
                             没有消息
                         </li>
                         <li v-else v-for="(message,index) in messages.has_read_messages" :key="index" class="m-li">
@@ -45,7 +42,7 @@
                     </ul>
                     <!--未读消息-->
                     <ul v-if="show == 'has_not_read'">
-                        <li v-if="!messages.hasnot_read_messages.length" style="text-align:center">
+                        <li v-if="!messages.hasnot_read_messages || !messages.hasnot_read_messages.length" style="text-align:center">
                             没有消息
                         </li>
                         <li v-else v-for="(message,index) in messages.hasnot_read_messages" :key="index" class="m-li">
@@ -75,32 +72,93 @@
                     </ul>
                 <!-- </transition-group> -->
             </div>
-            <!-- <cFooter></cFooter> -->
+            <Footer status='message'></Footer>
         </div>
     </div>
 </template>
+
+<script>
+import Footer from './Footer'
+import axios from 'axios';
+export default {
+		name: 'Message',
+		asyncData({store,route}) {
+			var accesstoken = null;
+			if(sessionStorage){
+				accesstoken = sessionStorage.getItem('accesstoken');
+			}
+			if(accesstoken == null || !accesstoken) return { store,route }
+			axios({
+				url:`https://cnodejs.org/api/v1/messages?&accesstoken=${accesstoken}`,
+				method:'get'
+			}).then((response)=>{
+				if(response.data.success === true){
+					let data = response.data.data;
+					store.dispatch('setMessage',data)
+				}
+			})
+			return { store,route }
+		},
+    data(){
+        return {
+            loading: true,
+            
+            show: 'has_not_read',
+            accesstoken: null
+        }
+    },
+    components:{
+        Footer
+		},
+		computed:{
+			messages(){
+				return this.$store.state.messages
+			},
+		},
+    methods:{
+        getSessionStorage(){
+            if(sessionStorage){
+                this.accesstoken = sessionStorage.getItem('accesstoken')
+            }
+        },
+        getData(){
+            axios({
+                url:`https://cnodejs.org/api/v1/messages?&accesstoken=${this.accesstoken}`,
+                method:'get'
+            }).then((response)=>{
+                if(response.data.success === true){
+                    this.messages = response.data.data;
+                }
+            })
+        }
+    },
+    mounted(){
+      this.getSessionStorage();
+    //   this.getData();
+    }
+}
+</script>
 <style scoped>
 *{
-    padding: 0;
-    margin: 0;
-}
-.m-header{
-    position: fixed;
-    top:0;
-    width: 100%;
-    height: 4rem;
-    line-height: 4rem;
-    text-align: center;
-    z-index: 99;
-    border-bottom: 1px solid #eee;
+  padding: 0;
+  margin: 0;
 }
 .m-content{
-    padding-top:4rem;   
+	padding-top: 4rem;
+}
+.m-header{
+  position: fixed;
+  top:0;
+  width: 100%;
+  height: 4rem;
+  line-height: 4rem;
+  text-align: center;
+  z-index: 99;
+  border-bottom: 1px solid #eee;
 }
 .msg-m-content{
-    padding-left: 4rem;
+  padding-left: 4rem;
 }
-
 .msg-m-content a{
     display: block;
     color: #80bd01;
@@ -115,6 +173,7 @@
     border-bottom: 1px solid #eee;
     width: 100%;
     padding: 0.5rem;
+	text-align: left;
 }
 ul li{
     list-style-type: none;
@@ -158,42 +217,3 @@ ul li{
 }
 /**动画*/
 </style>
-<script>
-import axios from 'axios';
-export default {
-    name: 'Message',
-		asyncData({store}) {
-			axios({
-
-			})
-		},
-    data(){
-        return {
-            loading:true,
-            messages:'',
-            show:'has_not_read'
-        }
-    },
-    components:{
-        
-    },
-    methods:{
-        
-        getData(){
-            this.$http({
-                url:`https://cnodejs.org/api/v1/messages?&accesstoken=${sessionStorage.getItem('accesstoken')}`,
-                method:'get'
-            }).then((response)=>{
-                if(response.data.success === true){
-                    this.loading = false;
-                    this.messages = response.data.data;
-                }
-            })
-        }
-    },
-    mounted(){
-      this.changeFooter('message');
-      this.getData();
-    }
-}
-</script>

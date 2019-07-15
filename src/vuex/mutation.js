@@ -16,5 +16,15 @@ export default {
   // 确定文章详情页内容
   setArticleDetail(state,data){
     state.acticleDeatil = data;
+  },
+  //
+  setMessage(state,data){
+    state.messages = data;
+  },
+  setUserInfo(state,data){
+    state.userInfo = data;
+  },
+  setCreateArticleData(state,data){
+    state.createArticleData = data;
   }
 } 

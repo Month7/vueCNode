@@ -1,9 +1,6 @@
 <template>
     <div class="userInfo">
-        <div class="loading" v-if="loading">
-            <img src="../../static/loading.gif"/>
-        </div>
-        <div v-else>
+        <div>
             <div class="user-header">
                 <span>个人资料</span>
                 <span class="back clearfix" @click="goBack"><i class="glyphicon glyphicon-chevron-left"></i></span>
@@ -57,17 +54,27 @@
         
 </template>
 <script>
-import {mapState,mapActions,mapGetters} from 'vuex'
 import cFooter from './Footer.vue'
+import axios from 'axios'
 export default {
-    name:'UserInfo',
+		name:'UserInfo',
+		asyncData({store,route}){
+			var loginname = route.params.loginname;
+      axios({
+        url:`https://cnodejs.org/api/v1/user/${loginname}`,
+        method:'get',
+      }).then((response)=>{
+        if(response.data.success === true){
+					store.dispatch('setUserInfo',response.data.data)
+        }
+			})
+			return { store,route }
+		},
     data(){
         return {
-            data:{},
-            topics:'reply',
-            loginname:'',
-            loading: true,
-            reload: true
+          topics:'reply',
+          loginname:'',
+          reload: true
         }
     },
     components:{
@@ -79,7 +86,10 @@ export default {
         },
         hasReplyTopics(){
             return this.data.recent_replies.length == 0;
-        }
+				},
+				data(){
+					return this.$store.state.userInfo;
+				},
     },
     filters:{
         filterTime(str){
@@ -110,161 +120,142 @@ export default {
             this.$router.back(-1);
         },
         getData(loginname){
-            this.$http({
-                url:`https://cnodejs.org/api/v1/user/${loginname}`,
-                method:'get',
-            }).then((response)=>{
-                if(response.data.success === true){
-                    this.data = response.data.data;
-                    this.loading = false;
-                   
-                }
-            })
+            
         },
         changeTopics(topic){
             this.topics = topic;
         },
-        ...mapActions([
-            'changeFooter'
-        ]),
+     
         exit(){
             sessionStorage.clear();
         },
- 
     },
     mounted(){
-        // sessionStorage.setItem('reload',true)
-        // if(sessionStorage.getItem){
-        //     this.getData(this.$route.params.loginname);
-        //     location.reload();
-        this.getData(this.$route.params.loginname);
-        //     this.reload = false;
-        // }
     }
 }
 </script>
 <style scoped>
     .back{
-        float: left;
-        position: absolute;
-        top:50%;
-        transform: translateY(-50%);
-        left: 1rem;
+      float: left;
+      position: absolute;
+      top:50%;
+      transform: translateY(-50%);
+      left: 1rem;
     }
     .topics-title{
-        padding-left: 4rem;
+      padding-left: 4rem;
+			text-align: left;
     }
     .userInfo{
-        position: relative;
+      position: relative;
     }
     .topics-img{
-        display: flex;
-        padding: 1rem;
-        align-items: center;
+      display: flex;
+      padding: 1rem;
+      align-items: center;
     }
     .topics-img img{
-        border-radius: 50%;
-        height: 3rem;
-        width: 3rem;
+      border-radius: 50%;
+      height: 3rem;
+      width: 3rem;
     }
     ul{
-        padding: 0;
+      padding: 0;
     }
     ul li{
-        padding: 0;
+      padding: 0;
     }
     ul li{
-        list-style-type: none;
+      list-style-type: none;
     }
     .recent{
-        display: none;
+      display: none;
     }
     .show{
-        display: block;
+      display: block;
     }
     a{
-        color: black;
+      color: black;
     }
     .user-buttons{
-        width: 100%;
-        display: flex;
+      width: 100%;
+      display: flex;
     }
     .reply-buttons{
-        width: 50%;
-        height: 3rem;
-        padding: 0;
-        display: block;
-        border: 1px solid #eee;
-        text-align: center;
-        line-height: 3rem;
+      width: 50%;
+      height: 3rem;
+      padding: 0;
+      display: block;
+      border: 1px solid #eee;
+      text-align: center;
+      line-height: 3rem;
     }
     .user-score{
-        margin-top:7rem;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 1rem;
-        margin-bottom: 1rem;
+      margin-top:7rem;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 1rem;
+      margin-bottom: 1rem;
     }
     .user-image img{
-        height: 15rem;
-        width:100%;
+      height: 15rem;
+      width: 100%;
     }
     .user-portrait{
-        position: absolute;
-        top:15rem;
-        height: 8rem;
-        width: 8rem;
-        left: 0;
-        right: 0;
-        margin: auto;
+      position: absolute;
+      top: 11rem;
+      height: 8rem;
+      width: 8rem;
+      left: 0;
+      right: 0;
+      margin: auto;
     }
     .user-portrait img{
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
     }
     .name{
-        border: 1px solid black;
+      border: 1px solid black;
     }
     .user-name{
-        position: absolute;
-        top:23.5rem;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 2rem;
-        font-weight: bold;
+      position: absolute;
+      top: 20rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      font-weight: bold;
     }
     .user-header{
-        height: 5rem;
-        text-align: center;
-        line-height: 5rem;
-        background: rgb(68,68,68);
-        color: #fff;
-        position: fixed;
-        top:0;
-        width: 100%;
-        z-index: 99;
+      height: 5rem;
+      text-align: center;
+      line-height: 5rem;
+      background: rgb(68,68,68);
+      color: #fff;
+      position: fixed;
+      top:0;
+      width: 100%;
+      z-index: 99;
     }
     .user-header::after{
-        content: '';
-        clear: both;
+      content: '';
+      clear: both;
     }
     .exitDiv{
-        float: right;
-        display: flex;
-        align-items: center;
-        height: 100%;
-        margin-right: 1rem;
+      float: right;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      margin-right: 1rem;
     }
     .exit{
-
-        border-radius: 0.6rem;
-        outline: none;
-        border: 0.1rem solid #fff;
-        height: 2.5rem;
-        width: 5rem;
-        font-size: 1.5rem;
-        line-height: 2.5rem;
-        background: rgb(68,68,68);
+      border-radius: 0.6rem;
+      outline: none;
+      border: 0.1rem solid #fff;
+      height: 2.5rem;
+      width: 5rem;
+      font-size: 1.5rem;
+      line-height: 2.5rem;
+      background: rgb(68,68,68);
     }
 </style>

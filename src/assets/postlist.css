@@ -35,7 +35,6 @@ hr{
 .lists{
   overflow-x:auto;  
   overflow-y:scroll;  
-  padding-top: 5rem;
   background: #fff;
   padding-bottom: 4rem;
   height: 100%;
