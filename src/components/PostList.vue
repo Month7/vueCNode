@@ -37,9 +37,7 @@
   export default {
     name: 'PostList',
     mounted(){
-      this.dataPromise && this.dataPromise.then((data)=>{
-        console.log('dataPromise调用');
-      })
+     
 		},
 		components: {
 			Footer
@@ -76,14 +74,7 @@
     },
     mounted(){
       this.$store.dispatch('setFooterStatus','index')
-      console.log('localSroarage',localStorage.getItem('test'));
     },
-    watch:{
-      $route(){
-        // console.log('路由改变!');
-        // this.$forceUpdate();
-      }
-    }
   }
 </script>
 <style scoped>

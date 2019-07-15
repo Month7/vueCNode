@@ -11,8 +11,6 @@ if(window.__INITIAL_STATE__) {
 // 以便我们不会二次预取(double-fetch)已有的数据。
 // 使用 `router.beforeResolve()`，以便确保所有异步组件都 resolve。
 router.onReady(()=>{
-  console.log('router ready') 
-  Vue.config.devtools = true;
   Vue.filter('filterTime', function (str) {
     if (!str) return ''
     var date = new Date(str)
@@ -35,12 +33,8 @@ router.onReady(()=>{
       return parseInt(time / 31536000000) + '年前'
     }
   })
-  // router.beforeEach((to,from)=>{
-
-  // })  
   router.beforeResolve((to, from, next) => {
     console.log('beforeResolve触发');
-    
     const matched = router.getMatchedComponents(to);
     const Constructor = Vue.extend(Loading);
     const loading = new Constructor();

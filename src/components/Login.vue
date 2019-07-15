@@ -32,13 +32,6 @@ export default {
 				},
 				goPreviousUrl(path,params){
 					var params = this.$route.params;
-					console.log(params);
-          // console.log(this.$route)
-					// console.log(params);
-					const  _goPreviousUrl = (path,params) => {
-
-						
-					}
           switch(params.from){      // 判断是从哪个页面跳转进的登录页面
             case 'create':
 							this.$store.dispatch('setCreateArticleData',{
@@ -46,25 +39,22 @@ export default {
 								type: params.type,
 								content: params.content,
 							})
-						  this.$router.go(-1);
+						  this.$router.push({
+								name: 'create'
+							})
 						break;
 						case 'self':           // 个人中心
-							_goPreviousUrl('self',{
-								title: params.title,
-								type: params.type,
-								content: params.content,
+							this.$router.push({
+								name: 'self'
 							})
 						break;
 						case 'message':
-							console.log('怎么不跳转回message?')
-							console.log(this.$router);
 							this.$router.push({
 								path: '/message',
 								name: 'message'
 							})
 						break;
 					}
-					
 				},
         getData(loginname){
             axios({

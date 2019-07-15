@@ -3,7 +3,7 @@
     <router-link :to="{name:'index',params:{tab:'all'}}"  :class="{active:clicked == 'index'}"><i class="glyphicon glyphicon-home"></i>首页</router-link>
     <router-link :to="{name:'create'}" :class="{active:clicked == 'create'}"><i class="glyphicon glyphicon-pencil"></i>发布</router-link>
     <router-link :to="{name:'message'}" :class="{active:clicked == 'message'}"><i class="glyphicon glyphicon-envelope"></i>消息</router-link>
-    <router-link  :to="{name:'self'}" :class="{active:clicked == 'self'}"><i class="glyphicon glyphicon-user"></i>我的</router-link>
+    <router-link :to="{name:'self'}" :class="{active:clicked == 'self'}"><i class="glyphicon glyphicon-user"></i>我的</router-link>
   </div>
 </template>
 <script>

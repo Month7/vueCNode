@@ -111,7 +111,7 @@ export default {
 					if(sessionStorage) {
 						var accesstoken = sessionStorage.getItem('accesstoken')
 					}
-            this.$http({
+            axios({
                 url:`https://cnodejs.org/api/v1//topic/${id}/replies`,
                 method:'post',
                 data:{
@@ -129,7 +129,7 @@ export default {
 					if(sessionStorage){
 						var accesstoken = sessionStorage.getItem('accesstoken')
 					}
-            this.$http({
+            axios({
                 url:`https://cnodejs.org/api/v1/topic/${id}/replies`,
                 method:'post',
                 data:{
@@ -156,34 +156,30 @@ export default {
           return false;
         },
         goBack(){
-            this.$router.back(-1);
+          this.$router.back(-1);
         },
         up(id){
-					console.log('up方法还调用么');
-					if(sessionStorage) {
-						var accesstoken = sessionStorage.getItem('accesstoken');
-					}
-            
-            if(accesstoken){
-                this.$http({
-                url:`https://cnodejs.org/api/v1/reply/${id}/ups`,
-                method:'post',
-                data:{
-                    accesstoken:accesstoken
-                }
-                }).then((response)=>{
-                    if(response.data.success === true){
-                        this.isUp = response.data.action;
-                        
-                    }
-                }).catch((error)=>{
-                    console.log(error)
-                })
-            }
-            else{
-                alert('请先登录!');
-            }
-        }
+			if(sessionStorage) {
+				var accesstoken = sessionStorage.getItem('accesstoken');
+			}
+      if(accesstoken){
+        axios({
+          url:`https://cnodejs.org/api/v1/reply/${id}/ups`,
+          method:'post',
+          data:{
+            accesstoken:accesstoken
+          }
+        }).then((response)=>{
+          if(response.data.success === true){
+            this.isUp = response.data.action;   
+          }
+				}).catch((error)=>{
+          console.log(error)
+        })
+			} else{
+        alert('请先登录!');
+      }
+  }
     },
     mounted(){
       this.$store.dispatch('setFooterStatus','hidden')

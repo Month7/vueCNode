@@ -10,6 +10,8 @@ export default {
 </script>
 <style>
 .loading{
+  padding-top: 5rem;
+  padding-bottom: 4rem;
   width: 100%;
   height: 100%;
   background: #fff;
@@ -18,6 +20,5 @@ export default {
   justify-content: center;
   align-items: center;
   position: fixed;
-  top: 5rem;
 }
 </style>
