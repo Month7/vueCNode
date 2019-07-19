@@ -82,13 +82,13 @@ import Footer from './Footer'
 import axios from 'axios';
 export default {
 		name: 'Message',
-		asyncData({store,route}) {
+		async asyncData({store,route}) {
 			var accesstoken = null;
 			if(sessionStorage){
 				accesstoken = sessionStorage.getItem('accesstoken');
 			}
 			if(accesstoken == null || !accesstoken) return { store,route }
-			axios({
+			await axios({
 				url:`https://cnodejs.org/api/v1/messages?&accesstoken=${accesstoken}`,
 				method:'get'
 			}).then((response)=>{

@@ -1,6 +1,6 @@
 <template>
   <div class="loading">
-    <img src="../../static/loading.gif" alt="loading动画" />
+    <img src="../../static/loading.gif" alt="加载中" />
   </div>
 </template>
 <script>
@@ -20,5 +20,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: fixed;
+  top: 0;
+  left: 0;
 }
 </style>

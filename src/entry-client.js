@@ -40,7 +40,9 @@ router.onReady(()=>{
     const loading = new Constructor();
     var component = loading.$mount();
     document.getElementById('app').appendChild(component.$el)
-
+    console.log('为什么loading没了');
+    console.log(component.$el);
+    console.log(document.getElementById('app'))
     Promise.all(matched.map(c => {
       if (c.asyncData) {
         return c.asyncData({ store, route: to })

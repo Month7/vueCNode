@@ -25,5 +25,8 @@ export default {
   },
   setCreateArticleData({commit},data){
     commit('setCreateArticleData',data)
+  },
+  loadMoreList({commit},list){
+    commit('loadMoreList',list);
   }
 }

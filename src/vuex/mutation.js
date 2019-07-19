@@ -26,5 +26,9 @@ export default {
   },
   setCreateArticleData(state,data){
     state.createArticleData = data;
+  },
+  loadMoreList(state,list){
+    state.lists.push(...list)
+    console.log(state.lists);
   }
 } 

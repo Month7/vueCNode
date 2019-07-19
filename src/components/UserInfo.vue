@@ -1,66 +1,65 @@
 <template>
-    <div class="userInfo">
-        <div>
-            <div class="user-header">
-                <span>个人资料</span>
-                <span class="back clearfix" @click="goBack"><i class="glyphicon glyphicon-chevron-left"></i></span>
-            </div>
-            <div class="user-content">
-                <div class="user-image">
-                    <img src="../assets/me.jpg">
-                </div>
-                <div class="user-portrait">
-                    <img :src="data.avatar_url"/>
-                </div>
-                <div class="name"></div>
-                <div class="user-name">
-                    {{data.loginname}}
-                </div>
-                <div class="user-score">
-                    <div>积分:{{data.score}}</div>
-                    <div>创建时间:{{data.create_at | filterTime}}</div>
-                </div>
-                <div class="user-buttons">
-                    <a class="reply-buttons" @click="changeTopics('reply')">回复</a>
-                    <a class="reply-buttons" @click="changeTopics('recent')">主题</a>
-                </div>
-                <ul class="recent" :class="{'show':topics == 'recent'}">
-                    <div v-if="hasRecentTopics">
-                        没有记录
-                    </div>
-                    <li v-for="(item,index) in data.recent_topics" :key="index">
-                        <div class="topics-img">
-                            <img :src="data.avatar_url"/>
-                            {{data.loginname}}
-                        </div>
-                        <div class="topics-title"><router-link :to="{name:'article',params:{id:item.id}}">{{item.title}}</router-link></div>
-                    </li> 
-                </ul>
-                <ul class="recent" :class="{'show':topics == 'reply'}">
-                    <div v-if="hasReplyTopics">
-                        没有记录
-                    </div>
-                    <li v-for="(item,index) in data.recent_replies" :key="index">
-                        <div class="topics-img">
-                            <img :src="data.avatar_url"/>
-                            {{data.loginname}}
-                        </div>
-                        <div class="topics-title"><router-link :to="{name:'article',params:{id:item.id}}">{{item.title}}</router-link></div>
-                    </li>
-                </ul>
-            </div>
+  <div class="userInfo">
+    <div>
+      <div class="user-header">
+        <span>个人资料</span>
+        <span class="back clearfix" @click="goBack"><i class="glyphicon glyphicon-chevron-left"></i></span>
+      </div>
+      <div class="user-content">
+        <div class="user-image">
+          <img src="../assets/me.jpg">
         </div>
-    </div>
-        
+        <div class="user-portrait">
+          <img :src="data.avatar_url"/>
+        </div>
+        <div class="name"></div>
+        <div class="user-name">
+          {{data.loginname}}
+        </div>
+        <div class="user-score">
+          <div>积分:{{data.score}}</div>
+          <div>创建时间:{{data.create_at | filterTime}}</div>
+        </div>
+        <div class="user-buttons">
+          <a class="reply-buttons" @click="changeTopics('reply')">回复</a>
+          <a class="reply-buttons" @click="changeTopics('recent')">主题</a>
+        </div>
+        <ul class="recent" :class="{'show':topics == 'recent'}">
+          <div v-if="hasRecentTopics">
+            没有记录
+          </div>
+          <li v-for="(item,index) in data.recent_topics" :key="index">
+            <div class="topics-img">
+              <img :src="data.avatar_url"/>
+                {{data.loginname}}
+            </div>
+            <div class="topics-title"><router-link :to="{name:'article',params:{id:item.id}}">{{item.title}}</router-link></div>
+          </li> 
+        </ul>
+        <ul class="recent" :class="{'show':topics == 'reply'}">
+          <div v-if="hasReplyTopics">
+            没有记录
+          </div>
+          <li v-for="(item,index) in data.recent_replies" :key="index">
+            <div class="topics-img">
+              <img :src="data.avatar_url"/>
+                {{data.loginname}}
+            </div>
+            <div class="topics-title"><router-link :to="{name:'article',params:{id:item.id}}">{{item.title}}</router-link></div>
+          </li>
+        </ul>
+      </div>
+  </div>
+</div>
 </template>
 <script>
 import cFooter from './Footer.vue'
 import axios from 'axios'
 export default {
 		name:'UserInfo',
-		asyncData({store,route}){
+		async asyncData({store,route}){
 			var loginname = route.params.loginname;
-      axios({
+      await axios({
         url:`https://cnodejs.org/api/v1/user/${loginname}`,
         method:'get',
       }).then((response)=>{
@@ -71,21 +70,21 @@ export default {
 			return { store,route }
 		},
     data(){
-        return {
-          topics:'reply',
-          loginname:'',
-          reload: true
-        }
+      return {
+        topics:'reply',
+        loginname:'',
+        reload: true
+      }
     },
     components:{
-        cFooter
+      cFooter
     },
     computed:{
         hasRecentTopics(){
-            return this.data.recent_topics.length == 0;
+          return this.data.recent_topics.length == 0;
         },
         hasReplyTopics(){
-            return this.data.recent_replies.length == 0;
+          return this.data.recent_replies.length == 0;
 				},
 				data(){
 					return this.$store.state.userInfo;

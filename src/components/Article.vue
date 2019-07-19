@@ -159,27 +159,27 @@ export default {
           this.$router.back(-1);
         },
         up(id){
-			if(sessionStorage) {
-				var accesstoken = sessionStorage.getItem('accesstoken');
-			}
-      if(accesstoken){
-        axios({
-          url:`https://cnodejs.org/api/v1/reply/${id}/ups`,
-          method:'post',
-          data:{
-            accesstoken:accesstoken
-          }
-        }).then((response)=>{
-          if(response.data.success === true){
-            this.isUp = response.data.action;   
-          }
-				}).catch((error)=>{
-          console.log(error)
-        })
-			} else{
-        alert('请先登录!');
-      }
-  }
+					if(sessionStorage) {
+						var accesstoken = sessionStorage.getItem('accesstoken');
+					}
+					if(accesstoken){
+						axios({
+							url:`https://cnodejs.org/api/v1/reply/${id}/ups`,
+							method:'post',
+							data:{
+								accesstoken:accesstoken
+							}
+						}).then((response)=>{
+							if(response.data.success === true){
+								this.isUp = response.data.action;   
+							}
+						}).catch((error)=>{
+							console.log(error)
+						})
+					} else{
+						alert('请先登录!');
+					}
+  			}
     },
     mounted(){
       this.$store.dispatch('setFooterStatus','hidden')
@@ -197,6 +197,7 @@ export default {
       width: 100%;
 			overflow-x: hidden;
     }
+		
     .myReply{
       position: fixed;
       bottom: 0;
@@ -244,7 +245,7 @@ export default {
     }
     .article{
       margin: 0 !important;
-      padding: 0!important;
+      padding-top: 4rem;
       height: 100%;
     }
     .article-header{
@@ -255,118 +256,117 @@ export default {
       display: flex;
 			justify-content: center;
       border-bottom: 1px solid #eee;
-        z-index: 99;
+      z-index: 99;
     }
     .article-header h4{
-        font-weight: bold;
+      font-weight: bold;
     }
     .article-username{
-        display: flex;
-        padding: 1rem;
-        border-bottom: 1px solid #eee;
+      display: flex;
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
     }
     .article-username img{
-        border-radius: 50%;
-        height: 3rem;
-        width: 3rem;
+      border-radius: 50%;
+      height: 3rem;
+      width: 3rem;
     }
     .article-title{
-        border-bottom: 1px solid #eee;
-        font-size: 2rem;
-        font-weight: bold;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 2rem;
+      border-bottom: 1px solid #eee;
+      font-size: 2rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
     }
     .tit{
-        text-align: center;
+      text-align: center;
     }
     .article-content{
-        border-bottom: 1px solid #eee;
-        padding: 0 0.6rem;
-        padding-bottom: 4rem;
+      border-bottom: 1px solid #eee;
+      padding: 0 0.6rem;
+      padding-bottom: 4rem;
     }
     .article-content img{
-        width: 100%;
+      width: 100%;
     }
     .article-count{
-        border-left: 0.5rem solid #80bd01;
-        border-bottom: 1px solid #eee;
-        padding: 0.5rem;
+      border-left: 0.5rem solid #80bd01;
+      border-bottom: 1px solid #eee;
+      padding: 0.5rem;
     }
     .floor{
-        float: right;
+      float: right;
     }
     .floor:after{
-        zoom: 1;
-        content: '';
-        clear: both;
-        display: block;
-        height: 0;
-        width: 0;
+      zoom: 1;
+      content: '';
+      clear: both;
+      display: block;
+      height: 0;
+      width: 0;
     }
     .reply{
-        float: left;
-        width: 100%;
-				text-align: left;
+      float: left;
+      width: 100%;
+			text-align: left;
     }
     .clearfix:after{
-        zoom: 1;
-        content: '';
-        clear: both;
-        display: block;
-        height: 0;
-        width: 0;
+      zoom: 1;
+      content: '';
+      clear: both;
+      display: block;
+      height: 0;
+      width: 0;
     }
     .reply:after{
-        zoom: 1;
-        content: '';
-        clear: both;
-        display: block;
-        height: 0;
-        width: 0;
+      zoom: 1;
+      content: '';
+      clear: both;
+      display: block;
+      height: 0;
+      width: 0;
     }
     .replies-side img{
-        width: 3rem;
-        height: 3rem;
-        border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
     }
     .replies-side{
-        float: left;
-        height: 100%;
+      float: left;
+      height: 100%;
     }
     .replies-content{
-       
-        padding-left: 3.5rem;
-        width: 100%;
+      padding-left: 3.5rem;
+      width: 100%;
     }
     .replies-content a{
-        color: #80bd01;
+      color: #80bd01;
     }
     .replies-content img{
-        width: 100%;
+      width: 100%;
     }
     .back{
-        float: left;
-        position: absolute;
-        top:50%;
-        transform: translateY(-50%);
-        left: 1rem;
+      float: left;
+      position: absolute;
+      top:50%;
+      transform: translateY(-50%);
+      left: 1rem;
     }
     .replies-bottom{
-        padding-left: 21rem;
+      padding-left: 21rem;
     }
     .replies-bottom i{
-        margin-left: 1rem;
+      margin-left: 1rem;
     }
     .replies-txt{
-        min-height: 6rem;
+      min-height: 6rem;
     }
     .relpy-text textarea{
-        width: 100%;
-        border-radius: 3%;
-        outline: none;
-        border: 1px solid #eee;
+      width: 100%;
+      border-radius: 3%;
+      outline: none;
+      border: 1px solid #eee;
     }
 </style>
